@@ -8,37 +8,37 @@ public:
         lookhead_ = getchar();
     }
 
-    void expr() {
-        term();
-        rest();
+    void Expr() {
+        Term();
+        Rest();
     }
 
 private:
     int lookhead_;
-    void rest() {
+    void Rest() {
         if (lookhead_ == '+') {
-            match('+'); term(); putchar('+'); rest();
+            Match('+'); Term(); putchar('+'); Rest();
         }
         else if (lookhead_ == '-') {
-            match('-'); term(); putchar('-'); rest();
+            Match('-'); Term(); putchar('-'); Rest();
         }
         else {}
     }
 
-    void term() {
+    void Term() {
         if (isdigit(lookhead_)) {
             putchar(lookhead_);
-            match(lookhead_);
+            Match(lookhead_);
         }
-        else error("Syntax error");
+        else Error("Syntax error");
     }
 
-    void match(int t) {
+    void Match(int t) {
         if (lookhead_ == t) lookhead_ = getchar();
-        else error("Syntax error");
+        else Error("Syntax error");
     }
 
-    void error(const char *msg) {
+    void Error(const char *msg) {
         printf("%s\n", msg);
         exit(-1);
     }
@@ -48,7 +48,7 @@ int main()
 {
     printf("Simple translator that translate infix expression to postfix expression in recursive descent method\n");
     Parser parser; 
-    parser.expr();
+    parser.Expr();
     printf("\n");
     return 0;
 }
