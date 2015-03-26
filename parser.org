@@ -1,13 +1,23 @@
 * 语法分析
 
+** 文法注意的问题
++ 二义性
++ 结合方向
++ 运算符的优先级
 
 ** 简单加减法的文法
-加减法文法简单，既可以使用左递归文法，又可以使用右递归的文法描述
+加减法文法简单，既可以使用左递归文法，又可以使用右递归的文法描述,但要注意其语法分析树不同，第三中文法是有二义性的。
 #+BEGIN_EXAMPLE
+//左结合 +|-|*|/  1+2-3
 list -> list + digit | 
         list - digit |
         digit
+//右结合 a=b=c 
 list -> digit + list |
         digit - list |
         digit
+//有二义性的文法
+list -> list + list |
+        list - list |
+        0 | 1 | 2 | 3 | 4
 #+END_EXAMPLE
