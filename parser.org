@@ -21,3 +21,13 @@ list -> list + list |
         list - list |
         0 | 1 | 2 | 3 | 4
 #+END_EXAMPLE
+** 含优先级文法构造
++ 基本单元
++ N个优先级层次
++ 从高到低构造产生式或从低到高也行
+所以N层优先级表示需要N+1个产生式，例如四则运算的产生式可以表示为
+#+BEGIN_EXAMPLE
+expr -> expr + term | expr - term | term
+term -> term * factor | term / factor | factor
+factor -> digit | ( expr )
+#+END_EXAMPLE
