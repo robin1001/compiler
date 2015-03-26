@@ -1,0 +1,13 @@
+* 语法分析
+
+
+** 简单加减法的文法
+加减法文法简单，既可以使用左递归文法，又可以使用右递归的文法描述
+#+BEGIN_EXAMPLE
+list -> list + digit | 
+        list - digit |
+        digit
+list -> digit + list |
+        digit - list |
+        digit
+#+END_EXAMPLE
