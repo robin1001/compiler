@@ -47,43 +47,64 @@ int next_token() {
         printf("%c\n", cur_token);
 }
 
-void expr(); 
-void term(); 
-void factor();
+double expr(); 
+double term(); 
+double factor();
 
-void expr() {
-    term();
+double calc(char op, double x, double y) {
+    switch(op) {
+        case '+': return x+y;
+        case '-': return x-y;
+        case '*': return x*y;
+        case '/': return x/y;
+        default:
+            break;
+    }
+    return 0;
+}
+
+double expr() {
+    double x = term();
     while('+' == cur_token || '-' == cur_token) {
+        char ch = cur_token;
         next_token();
-        term();
+        double y = term();
+        x = calc(ch, x, y);
     }
+    return x;
 }
 
-void term() {
-    factor();
+double term() {
+    double x = factor();
     while('*' == cur_token || '/' == cur_token) {
+        char ch = cur_token;
         next_token();
-        factor();
+        double y = factor();
+        x = calc(ch, x, y);
     }
+    return x;
 }
 
-void factor() {
+double factor() {
+    double x;
     if(kNumber == cur_token) { //number
+        x = number;
         next_token();
     }
     else if('(' == cur_token) {
         next_token(); 
-        expr();
+        x = expr();
         if (')' != cur_token)
             error("expected )");
         next_token();
     }
     else 
         error("syntax error, expected number or (");
+    return x;
 }
 
 int main() {
     next_token();
-    expr();    
+    printf("calc result:%lf\n", expr());    
 	return 0;
 }
