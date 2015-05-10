@@ -22,26 +22,26 @@ static double g_number;
 static int get_token() {
     static int last_char = ' ';
     //black tab
-    while(' ' == last_char) last_char = getchar();
+    while (' ' == last_char) last_char = getchar();
     //eof
-	if(last_char == EOF) return EOI;
+	if (last_char == EOF) return EOI;
     //id
-    if(isalpha(last_char)) {
+    if (isalpha(last_char)) {
         stringstream ss;
         do {
             ss << last_char;
             last_char =  getchar();
-        }while(isalpha(last_char));
+        }while (isalpha(last_char));
         g_token = ss.str();
         return ID;
     }
 	//number
-	if(isdigit(last_char)) {
+	if (isdigit(last_char)) {
         string num_str;
 		do{
 			num_str += last_char;
 			last_char = getchar();
-		}while(isdigit(last_char) || last_char == '.');//bug 
+		}while (isdigit(last_char) || last_char == '.');//bug 
 		g_number = strtod(num_str.c_str(), 0);
 		return NUMBER;
 	}
@@ -58,7 +58,7 @@ void error_msg(const string &msg) {
 }
 
 void match(int token_type) {
-    if(g_token_type != token_type) {
+    if (g_token_type != token_type) {
         stringstream ss;
         ss << "syntax error expected " << static_cast<char>(token_type) << endl;
         error_msg(ss.str());
@@ -67,9 +67,9 @@ void match(int token_type) {
 
 int next_token() {
     g_token_type = get_token();
-    if(NUMBER == g_token_type) 
+    if (NUMBER == g_token_type) 
         printf("%lf\n", g_number);
-    if(ID == g_token_type) 
+    if (ID == g_token_type) 
         printf("%s\n", g_token.c_str());
     else
         printf("%c\n", g_token_type);
@@ -148,7 +148,7 @@ Node *assign();
 Node *statements();
 
 Node *statements() {
-    while(g_token_type != EOI) {
+    while (g_token_type != EOI) {
         Node *n = assign();
         n->emit();
     }
@@ -169,7 +169,7 @@ Node *assign() {
 
 Node *expr() {
     Node *node = term();
-    while('+' == g_token_type || '-' == g_token_type) {
+    while ('+' == g_token_type || '-' == g_token_type) {
         char ch = g_token_type;
         next_token();
         Node *node2 = term();
@@ -180,7 +180,7 @@ Node *expr() {
 
 Node *term() {
     Node *node = factor();
-    while('*' == g_token_type || '/' == g_token_type) {
+    while ('*' == g_token_type || '/' == g_token_type) {
         char ch = g_token_type;
         next_token();
         Node *node2 = factor();
@@ -190,11 +190,11 @@ Node *term() {
 }
 
 Node *factor() {
-    if(NUMBER == g_token_type) { //g_number
+    if (NUMBER == g_token_type) { //g_number
         next_token();
         return new NumberNode(NUMBER, g_number);
     }
-    else if('(' == g_token_type) {
+    else if ('(' == g_token_type) {
         next_token(); 
         Node *node = expr();
         match(')');
