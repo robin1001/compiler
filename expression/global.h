@@ -1,27 +1,18 @@
 #ifndef GLOBAL_H_
 #define GLOBAL_H_
 
-enum TokenType{
-    EOI = -1,
-    NUMBER = -2,
-    ID = - 3,
-    UNKONWN= -4
-};
+#include <stdio.h>
 
+#include <string>
+#include <sstream>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+typedef enum {
+    EOI, //end of input, EOF
+    NUMBER, ID,
+	ASSIGN, ADD, MINUS, MULTI, DEVI,
+	SEMI, //;
+    UNKONWN
+}TokenType;
 
 
 

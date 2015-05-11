@@ -10,14 +10,12 @@
 #include "global.h"
 
 std::string g_token;
-double g_number;
 int g_token_type;
 
 
-
-int get_token() {
+TokenType get_token() {
 	using namespace std;
-    static int last_char = ' ';
+    char last_char = getchar();
     //black tab
     while (' ' == last_char) last_char = getchar();
     //eof
@@ -30,6 +28,7 @@ int get_token() {
             last_char =  getchar();
         }while (isalpha(last_char));
         g_token = ss.str();
+		ungetc(last_char, stdin);
         return ID;
     }
 	//number
@@ -39,13 +38,22 @@ int get_token() {
 			num_str += last_char;
 			last_char = getchar();
 		}while (isdigit(last_char) || last_char == '.');//bug 
-		g_number = strtod(num_str.c_str(), 0);
+		g_token = num_str;
+		ungetc(last_char, stdin);
+		//g_number = strtod(num_str.c_str(), 0);
 		return NUMBER;
 	}
-	
-	int cur_char = last_char;
-	last_char = getchar();
-	return cur_char;
+	g_token = last_char;
+	//other
+	switch(last_char) {
+		case '=':	return ASSIGN;
+		case '+':	return ADD;
+		case '-':	return MINUS;
+		case '*':	return MULTI;
+		case '/':	return DEVI;
+		case ';':	return SEMI;
+	}
+	return UNKONWN;
 }
 
 
