@@ -7,7 +7,8 @@
 #include "lexer.h"
 #include "node.h"
 
-std::string expect_token_map(TokenType expect_type) {
+
+std::string token_map(TokenType expect_type) {
 	switch (expect_type) {
 		case ID: return "ID";
 		case NUMBER: return "NUMBER";
@@ -16,18 +17,27 @@ std::string expect_token_map(TokenType expect_type) {
 		case MINUS: return "-";
 		case MULTI: return "*";
 		case DEVI: return "/";
-		case SEMI: return ";";
+		case LEFT_PAREN: return "(";
+		case RIGHT_PAREN: return ")";
+		case SEMICOLON: return ";";
+		default: return "unexpected";
 	}
 }
 
 void match(TokenType expect_type) {
-	using namespace std;
-	if (g_token_type == expect_type) 
+	if (g_token_type == expect_type) {
+		printf("%s\t%s\n", token_map(expect_type).c_str(), g_token.c_str());
 		g_token_type = get_token();
+	}
     else {
-		printf("syntax error: expected %s, but got %s\n", expect_token_map(expect_type).c_str(), g_token.c_str());
+		printf("syntax error: expected %s, but get %s\n", token_map(expect_type).c_str(), g_token.c_str());
 		exit(-1);
     }
+}
+
+void syntax_error(std::string error_msg) {
+	printf("%s\n", error_msg.c_str());
+	exit(-1);
 }
 
 
@@ -37,64 +47,77 @@ Node *factor();
 Node *assign();
 Node *statements();
 
-//Node *statements() {
-//    while (g_token_type != EOI) {
-//        Node *n = assign();
-//        n->emit();
-//    }
-//}
-//
-//Node *assign() {
-//    match(ID);
-//    string id = g_token;
-//    Node *id_node = new IdNode(ID, id); 
-//    next_token();
-//    match('=');
-//    next_token();
-//    Node *expr_node = expr();
-//    match(';');
-//    next_token();
-//    return new AssignNode(id_node, expr_node);
-//}
-//
-//Node *expr() {
-//    Node *node = term();
-//    while ('+' == g_token_type || '-' == g_token_type) {
-//        char ch = g_token_type;
-//        next_token();
-//        Node *node2 = term();
-//        node = new OpNode(ch, node, node2);
-//    }
-//    return node;
-//}
-//
-//Node *term() {
-//    Node *node = factor();
-//    while ('*' == g_token_type || '/' == g_token_type) {
-//        char ch = g_token_type;
-//        next_token();
-//        Node *node2 = factor();
-//        node = new OpNode(ch, node, node2);
-//    }
-//    return node;
-//}
-//
-//Node *factor() {
-//    if (NUMBER == g_token_type) { //g_number
-//        next_token();
-//        return new NumberNode(NUMBER, g_number);
-//    }
-//    else if ('(' == g_token_type) {
-//        next_token(); 
-//        Node *node = expr();
-//        match(')');
-//        next_token();
-//        return node;
-//    }
-//    else {
-//        error_msg("syntax error, expected number or (");
-//        return new Node(UNKONWN);
-//    }
-//}
-//
-//
+Node *statements() {
+	g_token_type = get_token();	
+	StmtsNode *node = new StmtsNode;	
+    while (g_token_type != EOI) {
+        Node *n = assign();
+		node->add_node(n);
+    }
+	return static_cast<Node *>(node);
+}
+
+Node *assign() {
+	std::string id = g_token;
+    match(ID);
+    Node *id_node = new IdNode(id); 
+    match(ASSIGN);
+    Node *expr_node = expr();
+    match(SEMICOLON);
+    return new AssignNode(id_node, expr_node);
+}
+
+Node *expr() {
+    Node *node = term();
+    while (ADD == g_token_type || MINUS == g_token_type) {
+        TokenType op = g_token_type;
+		match(op);
+        Node *node2 = term();
+        node = new OpNode(op, node, node2);
+    }
+    return node;
+}
+
+Node *term() {
+    Node *node = factor();
+    while (MULTI == g_token_type || DEVI == g_token_type) {
+        TokenType op = g_token_type;
+		match(op);
+        Node *node2 = factor();
+        node = new OpNode(op, node, node2);
+    }
+    return node;
+}
+
+Node *factor() {
+	Node * node;
+	switch(g_token_type) {
+		case NUMBER:
+			{
+				int val = atoi(g_token.c_str());
+				match(NUMBER);
+				node = new NumberNode(val);
+			}
+			break;
+		case ID:
+			{
+				std::string id = g_token;
+    			match(ID);
+    			node = new IdNode(id); 
+			}
+			break;
+		case LEFT_PAREN: 
+			match(LEFT_PAREN);
+ 	   		node = expr();
+ 	   		match(RIGHT_PAREN);
+			break;
+		default:
+			std::stringstream ss;
+			ss << "syntax error: unexpected token " << g_token;
+			syntax_error(ss.str());
+			break;
+	}
+	return node;
+}	
+
+
