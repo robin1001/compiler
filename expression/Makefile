@@ -1,21 +1,21 @@
 CXX = g++
-CXXFLAGS = -g #-I(include) -L(lib dir) -l(libname)
-OBJ = lexer.o parser.o
+CXXFLAGS = -g  -std=c++11 #-I(include) -L(lib dir) -l(libname)
+OBJ = parser.o lexer.o 
 
-expression: $(OBJ) main.o 
-	$(CXX) $(CXXFLAGS) $(OBJ) main.o -o expression  
-test: $(OBJ) lexer_test.o parser_test.o
-	$(CXX) $(CXXFLAGS) $(OBJ) lexer_test.o -o lexer_test
-	$(CXX) $(CXXFLAGS) $(OBJ) parser_test.o -o parser_test
-	
+main: $(OBJ) main.o 
+	$(CXX) $(CXXFLAGS) $(OBJ) main.cc -o $@ 
+
+#TODO type check
+test: $(OBJ) 
+	$(CXX) $(CXXFLAGS) $(OBJ) lexer_test.cc -o lexer_test 
+	$(CXX) $(CXXFLAGS) $(OBJ) parser_test.cc -o parser_test
+	$(CXX) $(CXXFLAGS) $(OBJ) symbol_table_test.cc -o symbol_table_test
+
 lexer.o: global.h
-node.o: global.h node.h
-parser.o: global.h lexer.h
-main.o: global.h lexer.h
-lexer_test.o: global.h lexer.h
-parser_test.o: global.h lexer.h parser.h node.h
+parser.o: global.h lexer.h node.h symbol_table.h
+
 
 .PHONY: clean
 clean:
-	-rm expression test
-	-rm *.o 
+	-rm -f main test
+	-rm -f *.o 

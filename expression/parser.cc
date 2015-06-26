@@ -6,7 +6,9 @@
 #include "global.h"
 #include "lexer.h"
 #include "node.h"
+#include "symbol_table.h"
 
+SymbolTable g_symble_table;
 
 std::string token_map(TokenType expect_type) {
 	switch (expect_type) {
@@ -26,7 +28,7 @@ std::string token_map(TokenType expect_type) {
 
 void match(TokenType expect_type) {
 	if (g_token_type == expect_type) {
-		printf("%s\t%s\n", token_map(expect_type).c_str(), g_token.c_str());
+		//printf("%s\t%s\n", token_map(expect_type).c_str(), g_token.c_str());
 		g_token_type = get_token();
 	}
     else {
@@ -61,6 +63,8 @@ Node *assign() {
 	std::string id = g_token;
     match(ID);
     Node *id_node = new IdNode(id); 
+	//add to symbol_table
+	g_symble_table.put(id);
     match(ASSIGN);
     Node *expr_node = expr();
     match(SEMICOLON);
@@ -104,6 +108,8 @@ Node *factor() {
 				std::string id = g_token;
     			match(ID);
     			node = new IdNode(id); 
+				//add to symbol_table
+				g_symble_table.put(id);
 			}
 			break;
 		case LEFT_PAREN: 
