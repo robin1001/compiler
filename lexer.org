@@ -12,3 +12,13 @@
 + 空格为相等关系,while(ch == ' ') ch = getchar()
 + 判断EOF的位置，应在循环读取之后，即注释和忽略空格之后
 
+
+** lex
+
++ %option noyywrap, yywrap 文件结束时的动作，
++ %{ %} copy to c file
++ ECHO, echo op
++ lex match the longest pattern
++ 
+
+

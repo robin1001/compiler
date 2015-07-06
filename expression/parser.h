@@ -1,11 +1,11 @@
-#ifndef PARSER_H_
-#define PARSER_H_
+#ifndef _PARSER_H_
+#define _PARSER_H_
 
 #include "node.h"
 #include "symbol_table.h"
 
 
-extern Node *statements();
+Node *statements();
 extern SymbolTable g_symble_table;
 
 

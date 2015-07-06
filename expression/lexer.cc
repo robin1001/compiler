@@ -7,7 +7,7 @@
 #include <sstream>
 #include <iostream>
 
-#include "global.h"
+#include "lexer.h"
 
 std::string g_token;
 TokenType g_token_type;

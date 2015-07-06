@@ -3,7 +3,6 @@
 
 #include <iostream>
 
-#include "global.h"
 #include "lexer.h"
 #include "node.h"
 #include "symbol_table.h"

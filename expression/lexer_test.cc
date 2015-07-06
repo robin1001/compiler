@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <iostream>
 
-#include "global.h"
 #include "lexer.h"
 
 

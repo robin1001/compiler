@@ -1,12 +1,21 @@
-#ifndef	LEXER_H_ 
-#define	LEXER_H_ 
+#ifndef	_LEXER_H_ 
+#define	_LEXER_H_ 
 
+#include <stdio.h>
 #include <string>
 
-#include "global.h"
+typedef enum {
+    EOI, //end of input, EOF
+    NUMBER, ID,
+	ASSIGN, ADD, MINUS, MULTI, DEVI,
+	SEMICOLON, //;
+	LEFT_PAREN, RIGHT_PAREN,
+    UNKNOWN
+}TokenType;
 
-extern std::string g_token;
+TokenType get_token();
+
 extern TokenType g_token_type;
-extern TokenType get_token();
+extern std::string g_token;
 
 #endif

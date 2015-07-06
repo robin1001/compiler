@@ -4,7 +4,6 @@
 #include <stdio.h>
 
 #include <string>
-#include <sstream>
 
 typedef enum {
     EOI, //end of input, EOF

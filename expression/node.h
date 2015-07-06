@@ -1,5 +1,5 @@
-#ifndef NODE_H_
-#define NODE_H_
+#ifndef _NODE_H_
+#define _NODE_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,7 +9,6 @@
 #include <string>
 #include <sstream>
 
-#include "global.h"
 #include "lexer.h"
 
 typedef enum {
@@ -44,8 +43,8 @@ public:
 		assert(ADD == op_ || MINUS == op_ || MULTI == op_ || DEVI == op_);
     }
 protected:
-    Node *node1_, *node2_;
 	TokenType op_;
+    Node *node1_, *node2_;
 };
 
 

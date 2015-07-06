@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -g  -std=c++11 #-I(include) -L(lib dir) -l(libname)
+CXXFLAGS = -g  -std=c++11 -Wall#-I(include) -L(lib dir) -l(libname)
 OBJ = parser.o lexer.o 
 
 main: $(OBJ) main.o 
@@ -11,8 +11,8 @@ test: $(OBJ)
 	$(CXX) $(CXXFLAGS) $(OBJ) parser_test.cc -o parser_test
 	$(CXX) $(CXXFLAGS) $(OBJ) symbol_table_test.cc -o symbol_table_test
 
-lexer.o: global.h
-parser.o: global.h lexer.h node.h symbol_table.h
+lexer.o: lexer.h
+parser.o: lexer.h node.h symbol_table.h
 
 
 .PHONY: clean

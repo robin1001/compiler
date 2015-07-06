@@ -1,8 +1,10 @@
+#ifndef _SYMBOL_TABLE_H_
+#define _SYMBOL_TABLE_H_
+
 #include <stdio.h>
 
 #include <string>
 #include <unordered_map>
-
 
 class SymbolTable {
 public:
@@ -28,3 +30,5 @@ protected:
 	std::unordered_map<std::string, int> table_;
 	int count_;
 };
+
+#endif
