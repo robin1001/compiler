@@ -1,4 +1,7 @@
 *.class
 *.out
 *.*~
+*.o
+*.exe
+*.stackdump
 \#*\#
