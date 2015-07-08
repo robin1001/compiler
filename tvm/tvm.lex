@@ -2,24 +2,10 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MAX_TOKEN 128
-typedef enum {
-	TOKEN_EOF = 0, //lex return 0 if EOF
-	TOKEN_MEM, //LD, ST		
-	TOKEN_REG, //LD, ST		
-	TOKEN_STACK, //POP PUSH
-	TOKEN_CALC, //ADD SUB DVI MUL
-	TOKEN_CMP, //CMP
-	TOKEN_JMP, //JMP, JE,	JNE ...
-	TOKEN_NUMBER, //123
-	TOKEN_LABEL, //l1
-	TOKEN_COMMA, //,
-	TOKEN_COLON, //:
-	TOKEN_LEFT_BRACKT,
-	TOKEN_RIGHT_BRACKT,
-}TokenType;
+#include "lex.h"
 
 char g_token[MAX_TOKEN];
+TokenType g_token_type;
 
 %}
 
@@ -33,8 +19,9 @@ label {letter}({digit}|{letter})*
 %%
 
 [\t \n]+  /*ignore \t and ' ' */
-"ld" 		{/*printf("%s\n", yytext);*/ return TOKEN_MEM;}
-"st" 		{/*printf("%s\n", yytext);*/ return TOKEN_MEM;}
+"mov" 		{/*printf("%s\n", yytext);*/ return TOKEN_MOV;}
+"ld" 		{/*printf("%s\n", yytext);*/ return TOKEN_LDST;}
+"st" 		{/*printf("%s\n", yytext);*/ return TOKEN_LDST;}
 "add" 		{/*printf("%s\n", yytext);*/ return TOKEN_CALC;}
 "sub" 		{/*printf("%s\n", yytext);*/ return TOKEN_CALC;}
 "mul" 		{/*printf("%s\n", yytext);*/ return TOKEN_CALC;}
@@ -74,12 +61,13 @@ TokenType get_token() {
 	return t;
 }
 
-int main() 
-{
-	//while(yylex()) {
-	//}
-	while(get_token()) {
-		printf("%s\n", g_token);	
-	}
-    return 0;
-}
+
+//int main() 
+//{
+//	//while(yylex()) {
+//	//}
+//	while(get_token()) {
+//		printf("%s\n", g_token);	
+//	}
+//    return 0;
+//}

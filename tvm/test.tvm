@@ -1,11 +1,13 @@
-	ld r0, r1
+	st r0, [r1]
+	st r0, [r1, r2]
 	ld r0, [r1]
-	ld r0, [r1, 4]
-l1: 
 	ld r0, [r1, r2]
-	ld r0, 100
-	st r0, r1
+	mov r0, r1
+	mov r0, 20
+l1: 
 	add r0, r1, r2
 	push r0
 	pop r0
+	cmp r0, r1
 	jmp l1
+

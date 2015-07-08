@@ -1,11 +1,9 @@
 #include "tvm.h"
 
 
-/* all keyword
-ST, LD, LDC, 
-ADD, SUB, MUL, DVI,
-POP, PUSH, 
-CMP, 
-JMP, JE, JNE, JG, JL, JGE, JLE
-*/
+Tvm::Tvm():pc_(0), sp_(0), flag(0), num_ins_(0), num_labels_(0) {
+	
+}
+
+
 
