@@ -1,22 +1,28 @@
 CXX = g++
-CXXFLAGS = -g -Wall
+CXXFLAGS = -g -std=c++0x -Wall
 LEX_FILE = tvm.lex
+OBJ = parse.o tvm.o lex.yy.o
 
-all:
+main: $(OBJ)
+	$(CXX) -o $@ main.cc $(OBJ) $(CXXFLAGS)
+	
+all: lex main test 
 	
 lex: 
 	#flex $(LEX_FILE) -o lex.cc
 	flex $(LEX_FILE) 
 
-test: lex.test parse.test
+test: parse.test lex.test 
 
 lex.test: lex.yy.o 
 	$(CXX) -o $@ lex.test.cc lex.yy.o $(CXXFLAGS)
-parse.test: parse.o lex.yy.o
-	$(CXX) -o $@ parse.test.cc parse.o lex.yy.o $(CXXFLAGS)
+
+parse.test: $(OBJ) 
+	$(CXX) -o $@ parse.test.cc $(OBJ) $(CXXFLAGS)
 
 lex.yy.o: lex.h
-parse.o: parse.h lex.h
+tvm.o: lex.yy.o tvm.h
+parse.o: tvm.o lex.yy.o parse.h lex.h
 
 .PHONY: clean
 

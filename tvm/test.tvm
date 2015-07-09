@@ -9,5 +9,6 @@ l1:
 	push r0
 	pop r0
 	cmp r0, r1
-	jmp l1
-
+	jg l1
+	jmp l2
+	hlt

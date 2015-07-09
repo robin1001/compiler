@@ -6,7 +6,7 @@ number -> [0-9]+
 mem -> [reg,reg] 
 label -> [a-z][a-z0-9]+
 
-mv_expr -> mov reg, (reg | number)
+mov_expr -> mov reg, (reg | number)
 mem_expr -> (st | ld) reg, (mem)  
 calc_expr -> add reg, reg, reg |
 			 sub reg, reg, reg |
