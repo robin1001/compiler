@@ -4,8 +4,6 @@
 #include "lexer.h"
 
 
-extern std::string token_map(TokenType expect_type); 
-
 void test_lexer() {
 	TokenType token_type = get_token();
 	while (token_type != EOI) {

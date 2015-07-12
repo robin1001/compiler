@@ -14,6 +14,7 @@ typedef enum {
 }TokenType;
 
 TokenType get_token();
+std::string token_map(TokenType expect_type); 
 
 extern TokenType g_token_type;
 extern std::string g_token;

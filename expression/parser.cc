@@ -9,22 +9,6 @@
 
 SymbolTable g_symble_table;
 
-std::string token_map(TokenType expect_type) {
-	switch (expect_type) {
-		case ID: return "ID";
-		case NUMBER: return "NUMBER";
-		case ASSIGN: return "=";
-		case ADD: return "+";
-		case MINUS: return "-";
-		case MULTI: return "*";
-		case DEVI: return "/";
-		case LEFT_PAREN: return "(";
-		case RIGHT_PAREN: return ")";
-		case SEMICOLON: return ";";
-		default: return "unexpected";
-	}
-}
-
 void match(TokenType expect_type) {
 	if (g_token_type == expect_type) {
 		//printf("%s\t%s\n", token_map(expect_type).c_str(), g_token.c_str());

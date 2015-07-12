@@ -6,14 +6,18 @@ main: $(OBJ) main.o
 	$(CXX) $(CXXFLAGS) $(OBJ) main.cc -o $@ 
 
 #TODO type check
-test: $(OBJ) 
-	$(CXX) $(CXXFLAGS) $(OBJ) lexer_test.cc -o lexer_test 
-	$(CXX) $(CXXFLAGS) $(OBJ) parser_test.cc -o parser_test
-	$(CXX) $(CXXFLAGS) $(OBJ) symbol_table_test.cc -o symbol_table_test
+test: lexer_test parser_test symbol_table_test 
+
+lexer_test: lexer.o
+	$(CXX) -o $@ lexer_test.cc lexer.o $(CXXFLAGS) 
+parser_test: $(OBJ)
+	$(CXX) -o $@  parser_test.cc $(OBJ) $(CXXFLAGS) 
+symbol_table_test: $(OBJ)
+	$(CXX) -o $@  symbol_table_test.cc $(OBJ) $(CXXFLAGS) 
+	
 
 lexer.o: lexer.h
 parser.o: lexer.h node.h symbol_table.h
-
 
 .PHONY: clean
 clean:

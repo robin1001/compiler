@@ -12,6 +12,21 @@
 std::string g_token;
 TokenType g_token_type;
 
+std::string token_map(TokenType expect_type) {
+	switch (expect_type) {
+		case ID: return "ID";
+		case NUMBER: return "NUMBER";
+		case ASSIGN: return "=";
+		case ADD: return "+";
+		case MINUS: return "-";
+		case MULTI: return "*";
+		case DEVI: return "/";
+		case LEFT_PAREN: return "(";
+		case RIGHT_PAREN: return ")";
+		case SEMICOLON: return ";";
+		default: return "unexpected";
+	}
+}
 
 TokenType get_token() {
 	using namespace std;
