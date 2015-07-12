@@ -1,25 +1,26 @@
 CXX = g++
-CXXFLAGS = -g  -std=c++11 -Wall#-I(include) -L(lib dir) -l(libname)
-OBJ = parser.o lexer.o 
+CXXFLAGS = -g  -std=c++11 -Wall -Iinclude#-I(include) -L(lib dir) -l(libname)
+#SRC_ALL = $(wildcard ./src/*.cc) #./test_src/*.cc)
+#OBJ_ALL = $(patsubst %.cc, ./bin/%.o, $(notdir $(SRC_ALL)))
+OBJ = $(addprefix bin/, parser.o lexer.o)
 
-main: $(OBJ) main.o 
-	$(CXX) $(CXXFLAGS) $(OBJ) main.cc -o $@ 
+all: bin/main
 
-#TODO type check
-test: lexer_test parser_test symbol_table_test 
+bin/main: bin/main.o $(OBJ) 
+	$(CXX) -o $@ $< $(OBJ) $(CXXFLAGS)
 
-lexer_test: lexer.o
-	$(CXX) -o $@ lexer_test.cc lexer.o $(CXXFLAGS) 
-parser_test: $(OBJ)
-	$(CXX) -o $@  parser_test.cc $(OBJ) $(CXXFLAGS) 
-symbol_table_test: $(OBJ)
-	$(CXX) -o $@  symbol_table_test.cc $(OBJ) $(CXXFLAGS) 
-	
+test: bin/lexer_test bin/parser_test bin/symbol_table_test
 
-lexer.o: lexer.h
-parser.o: lexer.h node.h symbol_table.h
+bin/%_test: test_src/%_test.cc $(OBJ)
+	$(CXX) -o $@ $< $(OBJ) $(CXXFLAGS) 
+
+bin/%.o: src/%.cc
+	$(CXX) -c -o $@ $< $(CXXFLAGS) 
+
+echo:
+	@echo $(SRC_ALL)
+	@echo $(OBJ_ALL)
 
 .PHONY: clean
 clean:
-	-rm -f main test
-	-rm -f *.o 
+	-rm -f bin/*

@@ -5,5 +5,6 @@
 
 int main() {
 	Node *node = statements();
+
 	return 0;
 }
