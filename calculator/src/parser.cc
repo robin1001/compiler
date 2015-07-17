@@ -5,9 +5,6 @@
 
 #include "lexer.h"
 #include "node.h"
-#include "symbol_table.h"
-
-SymbolTable g_symble_table;
 
 void match(TokenType expect_type) {
 	if (g_token_type == expect_type) {
@@ -31,11 +28,16 @@ Node *term();
 Node *factor();
 Node *assign();
 Node *statements();
+Node *parse();
+
+Node *parse() {
+	return statements(); 
+}
 
 Node *statements() {
 	g_token_type = get_token();	
 	StmtsNode *node = new StmtsNode;	
-    while (g_token_type != EOI) {
+    while (g_token_type != TOKEN_EOI) {
         Node *n = assign();
 		node->add_node(n);
     }
@@ -44,19 +46,18 @@ Node *statements() {
 
 Node *assign() {
 	std::string id = g_token;
-    match(ID);
+    match(TOKEN_ID);
     Node *id_node = new IdNode(id); 
 	//add to symbol_table
-	g_symble_table.put(id);
-    match(ASSIGN);
+    match(TOKEN_ASSIGN);
     Node *expr_node = expr();
-    match(SEMICOLON);
+    match(TOKEN_SEMICOLON);
     return new AssignNode(id_node, expr_node);
 }
 
 Node *expr() {
     Node *node = term();
-    while (ADD == g_token_type || MINUS == g_token_type) {
+    while (TOKEN_ADD == g_token_type || TOKEN_MINUS == g_token_type) {
         TokenType op = g_token_type;
 		match(op);
         Node *node2 = term();
@@ -67,7 +68,7 @@ Node *expr() {
 
 Node *term() {
     Node *node = factor();
-    while (MULTI == g_token_type || DEVI == g_token_type) {
+    while (TOKEN_MULTI == g_token_type || TOKEN_DEVI == g_token_type) {
         TokenType op = g_token_type;
 		match(op);
         Node *node2 = factor();
@@ -79,26 +80,24 @@ Node *term() {
 Node *factor() {
 	Node * node;
 	switch(g_token_type) {
-		case NUMBER:
+		case TOKEN_NUMBER:
 			{
 				int val = atoi(g_token.c_str());
-				match(NUMBER);
+				match(TOKEN_NUMBER);
 				node = new NumberNode(val);
 			}
 			break;
-		case ID:
+		case TOKEN_ID:
 			{
 				std::string id = g_token;
-    			match(ID);
+    			match(TOKEN_ID);
     			node = new IdNode(id); 
-				//add to symbol_table
-				g_symble_table.put(id);
 			}
 			break;
-		case LEFT_PAREN: 
-			match(LEFT_PAREN);
+		case TOKEN_LEFT_PAREN: 
+			match(TOKEN_LEFT_PAREN);
  	   		node = expr();
- 	   		match(RIGHT_PAREN);
+ 	   		match(TOKEN_RIGHT_PAREN);
 			break;
 		default:
 			std::stringstream ss;

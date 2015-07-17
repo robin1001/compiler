@@ -2,7 +2,7 @@ CXX = g++
 CXXFLAGS = -g  -std=c++11 -Wall -Iinclude#-I(include) -L(lib dir) -l(libname)
 #SRC_ALL = $(wildcard ./src/*.cc) #./test_src/*.cc)
 #OBJ_ALL = $(patsubst %.cc, ./bin/%.o, $(notdir $(SRC_ALL)))
-OBJ = $(addprefix bin/, parser.o lexer.o)
+OBJ = $(addprefix bin/, calculator.o parser.o lexer.o)
 
 all: bin/main
 

@@ -5,12 +5,12 @@
 #include <string>
 
 typedef enum {
-    EOI, //end of input, EOF
-    NUMBER, ID,
-	ASSIGN, ADD, MINUS, MULTI, DEVI,
-	SEMICOLON, //;
-	LEFT_PAREN, RIGHT_PAREN,
-    UNKNOWN
+    TOKEN_EOI, //end of input, EOF
+    TOKEN_NUMBER, TOKEN_ID,
+	TOKEN_ASSIGN, TOKEN_ADD, TOKEN_MINUS, TOKEN_MULTI, TOKEN_DEVI,// = + - * /
+	TOKEN_SEMICOLON, //;
+	TOKEN_LEFT_PAREN, TOKEN_RIGHT_PAREN,
+    TOKEN_UNKNOWN
 }TokenType;
 
 TokenType get_token();

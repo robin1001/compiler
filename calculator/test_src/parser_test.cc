@@ -4,7 +4,7 @@
 #include "parser.h"
 
 int main() {
-	Node *node = statements();
-	g_symble_table.print_symble_table();
+	Node *node = parse();
+	assert(NODE_STMTS == node->type()); 
 	return 0;
 }

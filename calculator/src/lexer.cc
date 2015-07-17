@@ -14,16 +14,16 @@ TokenType g_token_type;
 
 std::string token_map(TokenType expect_type) {
 	switch (expect_type) {
-		case ID: return "ID";
-		case NUMBER: return "NUMBER";
-		case ASSIGN: return "=";
-		case ADD: return "+";
-		case MINUS: return "-";
-		case MULTI: return "*";
-		case DEVI: return "/";
-		case LEFT_PAREN: return "(";
-		case RIGHT_PAREN: return ")";
-		case SEMICOLON: return ";";
+		case TOKEN_ID: return "ID";
+		case TOKEN_NUMBER: return "NUMBER";
+		case TOKEN_ASSIGN: return "=";
+		case TOKEN_ADD: return "+";
+		case TOKEN_MINUS: return "-";
+		case TOKEN_MULTI: return "*";
+		case TOKEN_DEVI: return "/";
+		case TOKEN_LEFT_PAREN: return "(";
+		case TOKEN_RIGHT_PAREN: return ")";
+		case TOKEN_SEMICOLON: return ";";
 		default: return "unexpected";
 	}
 }
@@ -34,7 +34,7 @@ TokenType get_token() {
     //black tab
     while (' ' == last_char || '\t' == last_char || '\n' == last_char) last_char = getchar();
     //eof
-	if (last_char == EOF) return EOI;
+	if (last_char == EOF) return TOKEN_EOI;
     //id
     if (isalpha(last_char)) {
         stringstream ss;
@@ -44,7 +44,7 @@ TokenType get_token() {
         }while (isalpha(last_char));
         g_token = ss.str();
 		ungetc(last_char, stdin);
-        return ID;
+        return TOKEN_ID;
     }
 	//number
 	if (isdigit(last_char)) {
@@ -56,23 +56,23 @@ TokenType get_token() {
 		g_token = num_str;
 		ungetc(last_char, stdin);
 		//g_number = strtod(num_str.c_str(), 0);
-		return NUMBER;
+		return TOKEN_NUMBER;
 	}
 	g_token = last_char;
 	//other
 	switch(last_char) {
-		case '=':	return ASSIGN;
-		case '+':	return ADD;
-		case '-':	return MINUS;
-		case '*':	return MULTI;
-		case '/':	return DEVI;
-		case '(':	return LEFT_PAREN;
-		case ')':	return RIGHT_PAREN;
-		case ';':	return SEMICOLON;
+		case '=':	return TOKEN_ASSIGN;
+		case '+':	return TOKEN_ADD;
+		case '-':	return TOKEN_MINUS;
+		case '*':	return TOKEN_MULTI;
+		case '/':	return TOKEN_DEVI;
+		case '(':	return TOKEN_LEFT_PAREN;
+		case ')':	return TOKEN_RIGHT_PAREN;
+		case ';':	return TOKEN_SEMICOLON;
 	}
 	printf("unknown char %c\n", last_char);
 	exit(-1);
-	return UNKNOWN;
+	return TOKEN_UNKNOWN;
 }
 
 
