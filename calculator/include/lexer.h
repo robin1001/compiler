@@ -13,10 +13,30 @@ typedef enum {
     TOKEN_UNKNOWN
 }TokenType;
 
-TokenType get_token();
-std::string token_map(TokenType expect_type); 
-
-extern TokenType g_token_type;
-extern std::string g_token;
+class Lexer {
+public:
+    Lexer(char *input, is_file = true): is_file_(is_file), input_cur_(0), is_read_(false) {
+        if (is_file_) {
+            fp_ = fopen(input, "r");
+        } else {
+            input_ = input;
+        }
+    }
+    ~Lexer() {
+        if (is_file_) fclose(fp_);
+    }
+    TokenType get_token() { return token_type_; }
+    static std::string token_map(TokenType expect_type); 
+protected:
+    char read_char(); 
+protected:
+    bool is_file_;
+    bool is_read_; //if already read next char
+    FILE *fp_;
+    std::string input_; 
+    int input_cur_;
+    TokenType token_type_;
+    std::string token_;
+};
 
 #endif

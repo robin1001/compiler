@@ -5,14 +5,10 @@
 
 #include <string>
 #include <sstream>
-#include <iostream>
 
 #include "lexer.h"
 
-std::string g_token;
-TokenType g_token_type;
-
-std::string token_map(TokenType expect_type) {
+std::string Lexer::token_map(TokenType expect_type) {
 	switch (expect_type) {
 		case TOKEN_ID: return "ID";
 		case TOKEN_NUMBER: return "NUMBER";
@@ -28,51 +24,58 @@ std::string token_map(TokenType expect_type) {
 	}
 }
 
-TokenType get_token() {
-	using namespace std;
-    char last_char = getchar();
+char Lexer::read_char() {
+    if (is_file_) {// file or stdin 
+        assert(f != NULL);
+        return 
+    } else {
+        if (input_cur_ < input_.size()) return input_[input_cur_++];
+        else return EOF;
+    }
+}
+
+TokenType Lexer::get_token() {
+    if (!is_read_) ch = getchar();
     //black tab
-    while (' ' == last_char || '\t' == last_char || '\n' == last_char) last_char = getchar();
+    while (' ' == ch || '\t' == ch || '\n' == ch) ch = getchar();
     //eof
-	if (last_char == EOF) return TOKEN_EOI;
+	if (ch == EOF) return TOKEN_EOI;
     //id
-    if (isalpha(last_char)) {
-        stringstream ss;
+    if (isalpha(ch)) {
+        std::stringstream ss;
         do {
-            ss << last_char;
-            last_char =  getchar();
-        }while (isalpha(last_char));
-        g_token = ss.str();
-		ungetc(last_char, stdin);
+            ss << ch;
+            ch =  getchar();
+        } while (isalpha(ch));
+        token_ = ss.str();
+        is_read_ = true;
         return TOKEN_ID;
     }
 	//number
-	if (isdigit(last_char)) {
-        string num_str;
-		do{
-			num_str += last_char;
-			last_char = getchar();
-		}while (isdigit(last_char));//bug 
-		g_token = num_str;
-		ungetc(last_char, stdin);
-		//g_number = strtod(num_str.c_str(), 0);
+	if (isdigit(ch)) {
+        std::string num_str;
+		do {
+			num_str += ch;
+			ch = getchar();
+		} while (isdigit(ch));//bug 
+		token_ = num_str;
+        is_read_ = true;
 		return TOKEN_NUMBER;
 	}
-	g_token = last_char;
+	//g_token = ch;
 	//other
-	switch(last_char) {
-		case '=':	return TOKEN_ASSIGN;
-		case '+':	return TOKEN_ADD;
-		case '-':	return TOKEN_MINUS;
-		case '*':	return TOKEN_MULTI;
-		case '/':	return TOKEN_DEVI;
-		case '(':	return TOKEN_LEFT_PAREN;
-		case ')':	return TOKEN_RIGHT_PAREN;
-		case ';':	return TOKEN_SEMICOLON;
+	switch(ch) {
+		case '=': is_read_ = false; return TOKEN_ASSIGN;
+		case '+': is_read_ = false;	return TOKEN_ADD;
+		case '-': is_read_ = false;	return TOKEN_MINUS;
+		case '*': is_read_ = false;	return TOKEN_MULTI;
+		case '/': is_read_ = false;	return TOKEN_DEVI;
+		case '(': is_read_ = false;	return TOKEN_LEFT_PAREN;
+		case ')': is_read_ = false;	return TOKEN_RIGHT_PAREN;
+		case ';': is_read_ = false;	return TOKEN_SEMICOLON;
 	}
-	printf("unknown char %c\n", last_char);
+	printf("unknown char %c\n", ch);
 	exit(-1);
 	return TOKEN_UNKNOWN;
 }
-
 
