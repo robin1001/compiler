@@ -35,3 +35,5 @@ void Calculator::gen_symbol_table(Node *node) {
 void Calculator::build_symbol_table() {
 	gen_symbol_table(syntax_tree_);
 }
+
+
